@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -32,7 +33,12 @@ func main() {
 		json.NewEncoder(writer).Encode(resp)
 	})
 
-	fmt.Printf("Listening on %s:%d\n", host, port)
+	http.HandleFunc("/health", func(writer http.ResponseWriter, request *http.Request) {
+		log.Print("I'm alive")
+		writer.Write([]byte("ok"))
+	})
+
+	log.Printf("Listening on %s:%d\n", host, port)
 
 	http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), nil)
 }
