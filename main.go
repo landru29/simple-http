@@ -33,12 +33,17 @@ func main() {
 		json.NewEncoder(writer).Encode(resp)
 	})
 
-	http.HandleFunc("/health", func(writer http.ResponseWriter, request *http.Request) {
-		log.Print("I'm alive")
+	http.HandleFunc("/alive", func(writer http.ResponseWriter, request *http.Request) {
+		log.Print("I'm alive - yeah !")
 		writer.Write([]byte("ok"))
 	})
 
-	log.Printf("Listening on %s:%d\n", host, port)
+	http.HandleFunc("/ready", func(writer http.ResponseWriter, request *http.Request) {
+		log.Print("I'm ready - yeah !")
+		writer.Write([]byte("ok"))
+	})
+
+	log.Printf("I'm listening on %s:%d\n", host, port)
 
 	http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), nil)
 }
